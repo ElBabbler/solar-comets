@@ -13,6 +13,7 @@
   ],
   "author": "GitHub",
   "dependencies": {
-    "electron": "^3.0.10"
+    "electron": "^3.0.10",
+    "mathjs": "^5.2.3"
   }
 }
