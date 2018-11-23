@@ -8,12 +8,15 @@
     <body onload="init()">
         <canvas id="canvas" height="400" width="400"></canvas>
         <ul>
-            <li>X coordinate  <input type="number" id="x-coord"><br></li>
-            <li>Y coordinate  <input type="number" id="y-coord"><br></li>
-            <li>Z coordinate  <input type="number" id="z-coord"><br></li>
+            <li>Semi major axis  <input type="number" id="sm-axis"><br></li>
+            <li>Passage time  <input type="number" id="pass-time"><br></li>
+            <li>Eccentricity  <input type="number" id="eccent"><br></li>
+            <li>Note argument  <input type="number" id="note-arg"><br></li>
+            <li>Perecenter argument  <input type="number" id="per-arg"><br></li>
+            <li>Inclanation  <input type="number" id="inclan"><br></li>
         </ul>
         <input type="button" id="moonBtn" value="Move Moon" onclick="replaceMoon()" />
         <input type="button" id="viewSide" value="Change projection" onclick="changeSight()" />
-        <input type="button" id="turnLeft" value="turnLeft" onclick="turnLeft()" />
+        <input type="button" id="consoleCoords" value="consoleCoords" onclick="consoleCoords()" />
     </body>
 </html>

@@ -1,4 +1,5 @@
-const {CoordinateConvertor} = require('./src/utils/moveCaclculator');
+const { CoordinateConvertor } = require('./src/utils/moveCaclculator');
+const { OrbitCalculator } = require('./src/utils/moveCaclculator');
 
 const sun = new Image();
 const moon = new Image();
@@ -13,12 +14,15 @@ const objects = {};
 
 var canvas;
 
+let currentTime = 1996;
+
 function init() {
     sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
     moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
     earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
 
-    objects.moon = [moon, 0, 0, 0];
+    objects.moon = [moon, 0, 0, 0, {orbit: {}}];
+    objects.moon.calculator = new OrbitCalculator(1996, 100, 1995, 0.8, 0, 0, 0);
 
     canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -29,10 +33,23 @@ function init() {
 }
 
 function placeMoon() {
-    objects.moon[1] = parseInt(document.getElementById("x-coord").value);
-    objects.moon[2] = parseInt(document.getElementById("y-coord").value);
-    objects.moon[3] = parseInt(document.getElementById("z-coord").value);
-    console.log(objects.moon)
+    objects.moon.orbit = {};
+    const sm_axis = parseInt(document.getElementById("sm-axis").value);
+    const pass_time = parseInt(document.getElementById("pass-time").value);
+    const eccent = parseInt(document.getElementById("eccent").value);
+    const note_arg = parseInt(document.getElementById("note-arg").value);
+    const per_arg = parseInt(document.getElementById("per-arg").value);
+    const inclan = parseInt(document.getElementById("inclan").value);
+
+    objects.moon.orbit.sm_axis = sm_axis;
+    objects.moon.orbit.eccent = eccent;
+    objects.moon.orbit.pass_time = pass_time;
+    objects.moon.orbit.inclan = inclan;
+    objects.moon.orbit.per_arg = per_arg;
+    objects.moon.orbit.note_arg = note_arg;
+
+    console.log(objects.moon);
+    objects.moon.calculator = new OrbitCalculator(currentTime, sm_axis, pass_time, eccent, note_arg, per_arg, inclan);
 }
 
 function replaceMoon() {
@@ -48,11 +65,17 @@ function drawAllObjects() {
     drawEarthOrbit();
     drawMoon();
     ctx.drawImage(sun, 0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height);
+
+    currentTime += 0.3;
 }
 
 function drawMoon() {
     var ctx = canvas.getContext('2d');
-    const coords = isLookFromTop ? converter.xyToPlot(objects.moon.slice(1, 4)) : converter.xzToPlot(objects.moon.slice(1, 4));
+    const currentCoords = objects.moon.calculator.getCurrentCoordinatesToPlot(currentTime);
+    for (let i = 0; i < 3; i++) {
+        objects.moon[i + 1] = currentCoords[i]
+    }
+    const coords = isLookFromTop ? converter.xyToPlot(currentCoords) : converter.xzToPlot(currentCoords);
     ctx.drawImage(moon, coords[0], coords[1]);
 }
 
@@ -77,12 +100,6 @@ function drawEarthOrbit() {
     ctx.stroke();
 }
 
-function turnLeft() {
-    const result = isLookFromTop ? converter.turnLeft(objects.moon.slice(1, 3)) : converter.turnLeft([objects.moon[1], objects.moon[3]]);
-    objects.moon[1] = result[0];
-    if (isLookFromTop) {
-        objects.moon[2] = result[1];
-    } else {
-        objects.moon[3] = result[1];
-    }
+function consoleCoords() {
+    console.log(objects.moon);
 }
