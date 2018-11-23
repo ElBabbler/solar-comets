@@ -17,9 +17,9 @@ var canvas;
 let currentTime = 1996;
 
 function init() {
-    sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
-    moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
-    earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+    sun.src = 'src/resources/Canvas_sun.png';
+    moon.src = 'src/resources/Canvas_moon.png';
+    earth.src = 'src/resources/Canvas_earth.png';
 
     objects.moon = [moon, 0, 0, 0, {orbit: {}}];
     objects.moon.calculator = new OrbitCalculator(1996, 100, 1995, 0.8, 0, 0, 0);
@@ -34,12 +34,12 @@ function init() {
 
 function placeMoon() {
     objects.moon.orbit = {};
-    const sm_axis = parseInt(document.getElementById("sm-axis").value);
-    const pass_time = parseInt(document.getElementById("pass-time").value);
-    const eccent = parseInt(document.getElementById("eccent").value);
-    const note_arg = parseInt(document.getElementById("note-arg").value);
-    const per_arg = parseInt(document.getElementById("per-arg").value);
-    const inclan = parseInt(document.getElementById("inclan").value);
+    const sm_axis = parseFloat(document.getElementById("sm-axis").value);
+    const pass_time = parseFloat(document.getElementById("pass-time").value);
+    const eccent = parseFloat(document.getElementById("eccent").value);
+    const note_arg = parseFloat(document.getElementById("note-arg").value);
+    const per_arg = parseFloat(document.getElementById("per-arg").value);
+    const inclan = parseFloat(document.getElementById("inclan").value);
 
     objects.moon.orbit.sm_axis = sm_axis;
     objects.moon.orbit.eccent = eccent;
@@ -77,12 +77,6 @@ function drawMoon() {
     }
     const coords = isLookFromTop ? converter.xyToPlot(currentCoords) : converter.xzToPlot(currentCoords);
     ctx.drawImage(moon, coords[0], coords[1]);
-}
-
-function randomMoon() {
-    objects.moon[1] = Math.random() * CANVAS_SIZE.width - CANVAS_SIZE.width / 2;
-    objects.moon[2] = Math.random() * CANVAS_SIZE.height - CANVAS_SIZE.height / 2;
-    objects.moon[3] = Math.random() * CANVAS_SIZE.height - CANVAS_SIZE.width / 2;
 }
 
 function changeSight() {
